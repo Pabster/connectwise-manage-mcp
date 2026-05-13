@@ -65,6 +65,7 @@ import { registerCatalogTools } from "./tools/catalog.js";
 import { registerHealthTools } from "./tools/health.js";
 import { registerAgreementTools } from "./tools/agreements.js";
 import { registerOpportunityTools } from "./tools/opportunities.js";
+import { registerScheduleTools } from "./tools/schedule.js";
 
 // ---------------------------------------------------------------------------
 // Server factory
@@ -128,6 +129,7 @@ function createMcpServer(): McpServer {
   registerHealthTools(server, client);
   registerAgreementTools(server, client);
   registerOpportunityTools(server, client);
+  registerScheduleTools(server, client);
 
   return server;
 }
