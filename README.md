@@ -5,7 +5,7 @@
 
 **Let your AI assistant work directly with ConnectWise Manage.** Search tickets, log time, look up companies and contacts, manage projects — through natural conversation instead of clicking through the CWM interface.
 
-This is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that gives Claude (or any MCP-compatible AI) 41 tools covering the daily operations ConnectWise Manage shops depend on. Works with both **cloud-hosted and self-hosted** CWM instances — just point it at your server.
+This is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that gives Claude (or any MCP-compatible AI) 64 tools covering the daily operations ConnectWise Manage shops depend on. Works with both **cloud-hosted and self-hosted** CWM instances — just point it at your server.
 
 > **Part of the [MSP Claude Plugins](https://github.com/wyre-technology/msp-claude-plugins) ecosystem** — a growing suite of AI integrations for the MSP stack including [Autotask](https://github.com/wyre-technology/autotask-mcp), [Datto RMM](https://github.com/wyre-technology/datto-rmm-mcp), [IT Glue](https://github.com/wyre-technology/itglue-mcp), [HaloPSA](https://github.com/wyre-technology/halopsa-mcp), [NinjaOne](https://github.com/wyre-technology/ninjaone-mcp), [Huntress](https://github.com/wyre-technology/huntress-mcp), and more. Built by MSPs, for MSPs.
 
@@ -63,6 +63,9 @@ If your self-hosted instance uses a self-signed certificate, also set `CW_MANAGE
 - `cw_update_ticket` — Update a ticket (JSON Patch)
 - `cw_get_ticket_notes` — Get all notes on a ticket (including child ticket notes)
 - `cw_add_ticket_note` — Add a note to a ticket (discussion, internal, or resolution)
+- `cw_get_ticket_tasks` — Get all tasks/checklist items on a ticket
+- `cw_create_ticket_task` — Add a task/checklist item to a ticket
+- `cw_update_ticket_task` — Update a task on a ticket (e.g. mark complete)
 
 ### Companies
 - `cw_search_companies` — Search companies
@@ -88,6 +91,9 @@ If your self-hosted instance uses a self-signed certificate, also set `CW_MANAGE
 - `cw_search_time_entries` — Search time entries
 - `cw_get_time_entry` — Get a time entry by ID
 - `cw_create_time_entry` — Create a new time entry
+- `cw_update_time_entry` — Update a time entry (JSON Patch)
+- `cw_list_work_types` — List work types (reference data for time entries)
+- `cw_list_work_roles` — List work roles (reference data for time entries)
 
 ### Members
 - `cw_search_members` — Search members/technicians
@@ -101,16 +107,32 @@ If your self-hosted instance uses a self-signed certificate, also set `CW_MANAGE
 - `cw_list_boards` — List service boards
 - `cw_list_priorities` — List ticket priorities
 - `cw_list_statuses` — List statuses for a board
+- `cw_list_board_types` — List ticket types for a board
+- `cw_list_board_subtypes` — List ticket subtypes for a board
+- `cw_list_board_items` — List ticket items (third-level) for a board
 
 ### Activities
 - `cw_search_activities` — Search activities
 - `cw_get_activity` — Get an activity by ID
 - `cw_create_activity` — Create a new activity
+- `cw_list_activity_types` — List activity types (reference data)
+- `cw_list_activity_statuses` — List activity statuses (reference data)
+
+### Opportunities
+- `cw_search_opportunities` — Search sales opportunities
+- `cw_get_opportunity` — Get an opportunity by ID
+- `cw_create_opportunity` — Create a new sales opportunity
+- `cw_update_opportunity` — Update an opportunity (JSON Patch)
+- `cw_search_opportunity_forecasts` — Get forecast/revenue items for an opportunity
+- `cw_search_opportunity_notes` — Get notes on an opportunity
+- `cw_search_sales_stages` — List sales pipeline stages
 
 ### Schedule (Dispatch / Calendar)
 - `cw_search_schedule_entries` — Search schedule entries (calendar/dispatch appointments)
 - `cw_get_schedule_entry` — Get a schedule entry by ID
 - `cw_create_schedule_entry` — Create a new schedule entry
+- `cw_update_schedule_entry` — Update a schedule entry (JSON Patch — reschedule, change status, etc.)
+- `cw_delete_schedule_entry` — Delete/cancel a schedule entry
 - `cw_list_schedule_types` — List schedule entry types
 - `cw_list_schedule_statuses` — List schedule statuses
 - `cw_list_schedule_calendars` — List schedule calendars

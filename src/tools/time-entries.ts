@@ -68,4 +68,57 @@ export function registerTimeEntryTools(server: McpServer, client: CwManageClient
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     },
   );
+
+  server.tool(
+    "cw_update_time_entry",
+    "Update an existing time entry using JSON Patch operations.",
+    {
+      id: z.number().describe("Time entry ID"),
+      operations: z.array(z.object({
+        op: z.enum(["replace", "add", "remove"]).describe("Patch operation"),
+        path: z.string().describe("JSON path (e.g. 'actualHours', 'notes', 'timeStart', 'timeEnd', 'workType/id')"),
+        value: z.unknown().optional().describe("New value"),
+      })).describe("Array of JSON Patch operations"),
+    },
+    async ({ id, operations }) => {
+      const result = await client.patch(`/time/entries/${id}`, operations);
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    "cw_list_work_types",
+    "List work types in ConnectWise Manage (used when creating or updating time entries).",
+    {
+      conditions: z.string().optional().describe("ConnectWise conditions query string"),
+      page: z.number().optional().describe("Page number (default: 1)"),
+      pageSize: z.number().optional().describe("Results per page (default: 25, max: 1000)"),
+    },
+    async ({ conditions, page, pageSize }) => {
+      const result = await client.get("/time/workTypes", {
+        conditions,
+        page: page ?? 1,
+        pageSize: pageSize ?? 25,
+      });
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    "cw_list_work_roles",
+    "List work roles in ConnectWise Manage (used when creating or updating time entries).",
+    {
+      conditions: z.string().optional().describe("ConnectWise conditions query string"),
+      page: z.number().optional().describe("Page number (default: 1)"),
+      pageSize: z.number().optional().describe("Results per page (default: 25, max: 1000)"),
+    },
+    async ({ conditions, page, pageSize }) => {
+      const result = await client.get("/time/workRoles", {
+        conditions,
+        page: page ?? 1,
+        pageSize: pageSize ?? 25,
+      });
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    },
+  );
 }

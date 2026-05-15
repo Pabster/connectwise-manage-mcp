@@ -85,6 +85,35 @@ export function registerScheduleTools(server: McpServer, client: CwManageClient)
     },
   );
 
+  server.tool(
+    "cw_update_schedule_entry",
+    "Update an existing schedule entry using JSON Patch operations (e.g. reschedule, change status, update linked ticket).",
+    {
+      id: z.number().describe("Schedule entry ID"),
+      operations: z.array(z.object({
+        op: z.enum(["replace", "add", "remove"]).describe("Patch operation"),
+        path: z.string().describe("JSON path (e.g. 'dateStart', 'dateEnd', 'status/id', 'member/id')"),
+        value: z.unknown().optional().describe("New value"),
+      })).describe("Array of JSON Patch operations"),
+    },
+    async ({ id, operations }) => {
+      const result = await client.patch(`/schedule/entries/${id}`, operations);
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    "cw_delete_schedule_entry",
+    "Delete a schedule entry (cancel a dispatch/calendar appointment).",
+    {
+      id: z.number().describe("Schedule entry ID"),
+    },
+    async ({ id }) => {
+      await client.delete(`/schedule/entries/${id}`);
+      return { content: [{ type: "text", text: JSON.stringify({ success: true, deletedId: id }, null, 2) }] };
+    },
+  );
+
   // ---------------------------------------------------------------------------
   // Schedule reference data
   // ---------------------------------------------------------------------------
